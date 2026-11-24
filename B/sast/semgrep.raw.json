@@ -1,0 +1,411 @@
+{
+  "version": "1.186.0",
+  "results": [
+    {
+      "check_id": "delivery.sast.bank.cache-after-commit",
+      "path": "app/crud.py",
+      "start": {
+        "line": 20,
+        "col": 16,
+        "offset": 663
+      },
+      "end": {
+        "line": 41,
+        "col": 22,
+        "offset": 1759
+      },
+      "extra": {
+        "message": "A cache operation lies between database commit and acknowledgement. Review the outcome when Redis is unavailable.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.nonatomic-debit",
+      "path": "app/crud.py",
+      "start": {
+        "line": 32,
+        "col": 13,
+        "offset": 1265
+      },
+      "end": {
+        "line": 32,
+        "col": 118,
+        "offset": 1370
+      },
+      "extra": {
+        "message": "A prior balance observation is followed by an unconditional debit. Verify that funds are reserved atomically.",
+        "metadata": {},
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.search-in-cache-key",
+      "path": "app/crud.py",
+      "start": {
+        "line": 45,
+        "col": 17,
+        "offset": 1872
+      },
+      "end": {
+        "line": 45,
+        "col": 55,
+        "offset": 1910
+      },
+      "extra": {
+        "message": "User-supplied search text is part of the cache key. Check visibility to cache operators and monitoring.",
+        "metadata": {},
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.empty-cache-hit",
+      "path": "app/crud.py",
+      "start": {
+        "line": 46,
+        "col": 5,
+        "offset": 1915
+      },
+      "end": {
+        "line": 48,
+        "col": 18,
+        "offset": 1979
+      },
+      "extra": {
+        "message": "A nonempty Redis result makes the history handler return an empty list.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.sql-builder-review",
+      "path": "app/crud.py",
+      "start": {
+        "line": 61,
+        "col": 13,
+        "offset": 2351
+      },
+      "end": {
+        "line": 61,
+        "col": 57,
+        "offset": 2395
+      },
+      "extra": {
+        "message": "Dynamic SQL fragment. Classify manually by tracing interpolated values and bound parameters.",
+        "metadata": {},
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.sql-builder-review",
+      "path": "app/crud.py",
+      "start": {
+        "line": 64,
+        "col": 9,
+        "offset": 2464
+      },
+      "end": {
+        "line": 64,
+        "col": 57,
+        "offset": 2512
+      },
+      "extra": {
+        "message": "Dynamic SQL fragment. Classify manually by tracing interpolated values and bound parameters.",
+        "metadata": {},
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.demo-balances-at-startup",
+      "path": "app/db.py",
+      "start": {
+        "line": 34,
+        "col": 13,
+        "offset": 1053
+      },
+      "end": {
+        "line": 35,
+        "col": 31,
+        "offset": 1134
+      },
+      "extra": {
+        "message": "On an empty database the initialization routine adds nonzero example balances. Check environment separation.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.client-asserted-identity",
+      "path": "app/security.py",
+      "start": {
+        "line": 11,
+        "col": 9,
+        "offset": 420
+      },
+      "end": {
+        "line": 11,
+        "col": 30,
+        "offset": 441
+      },
+      "extra": {
+        "message": "The identity provider returns the integer supplied in the client identity header. Review the trust boundary.",
+        "metadata": {},
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.plaintext-db-password",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 7,
+        "col": 1,
+        "offset": 78
+      },
+      "end": {
+        "line": 7,
+        "col": 34,
+        "offset": 111
+      },
+      "extra": {
+        "message": "A literal PostgreSQL password is supplied in the deployment manifest.",
+        "metadata": {},
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.postgres-host-port",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 11,
+        "col": 9,
+        "offset": 185
+      },
+      "end": {
+        "line": 11,
+        "col": 20,
+        "offset": 196
+      },
+      "extra": {
+        "message": "PostgreSQL is published on a host port without an explicit loopback binding. Verify network reachability.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.redis-host-port",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 18,
+        "col": 9,
+        "offset": 298
+      },
+      "end": {
+        "line": 18,
+        "col": 20,
+        "offset": 309
+      },
+      "extra": {
+        "message": "Redis is published on a host port without an explicit loopback binding. Verify network reachability and ACLs.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.privileged-app-dsn",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 23,
+        "col": 7,
+        "offset": 354
+      },
+      "end": {
+        "line": 23,
+        "col": 52,
+        "offset": 399
+      },
+      "extra": {
+        "message": "API connects using the PostgreSQL bootstrap role with credentials embedded in the connection string.",
+        "metadata": {},
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "delivery.sast.bank.cleartext-redis-url",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 24,
+        "col": 7,
+        "offset": 424
+      },
+      "end": {
+        "line": 24,
+        "col": 37,
+        "offset": 454
+      },
+      "extra": {
+        "message": "Redis URL has no TLS or credentials. Check whether network and proxy controls cover this connection.",
+        "metadata": {},
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "manual.bank.idor",
+      "path": "app/security.py",
+      "start": {
+        "line": 11,
+        "col": 9,
+        "offset": 420
+      },
+      "end": {
+        "line": 11,
+        "col": 30,
+        "offset": 441
+      },
+      "extra": {
+        "message": "IDOR/BOLA. При прямом доступе к API клиент сам задаёт X-User-Id. Сервис использует этот идентификатор при проверке владельца счёта для списания и при выдаче истории операций.",
+        "severity": "ERROR",
+        "metadata": {
+          "source": "manual"
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "paths": {
+    "scanned": [
+      "app/config.py",
+      "app/crud.py",
+      "app/db.py",
+      "app/main.py",
+      "app/redis_client.py",
+      "app/schemas.py",
+      "app/security.py",
+      "docker-compose.yml"
+    ]
+  },
+  "time": {
+    "rules": [],
+    "rules_parse_time": 0.001352071762084961,
+    "profiling_times": {
+      "config_time": 0.0994253158569336,
+      "core_time": 0.41580629348754883,
+      "ignores_time": 7.033348083496094e-05,
+      "total_time": 0.5194013118743896
+    },
+    "parsing_time": {
+      "total_time": 0.11227083206176758,
+      "per_file_time": {
+        "mean": 0.008019345147269112,
+        "std_dev": 0.00012867640883049887
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_files": []
+    },
+    "scanning_time": {
+      "total_time": 0.13948869705200195,
+      "per_file_time": {
+        "mean": 0.01549874411688911,
+        "std_dev": 0.00019081063566104997
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_files": []
+    },
+    "matching_time": {
+      "total_time": 0.024637460708618164,
+      "per_file_and_rule_time": {
+        "mean": 0.0017598186220441547,
+        "std_dev": 9.734458876490566e-06
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_rules_on_files": []
+    },
+    "tainting_time": {
+      "total_time": 0.0,
+      "per_def_and_rule_time": {
+        "mean": 0.0,
+        "std_dev": 0.0
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_rules_on_defs": []
+    },
+    "fixpoint_timeouts": [],
+    "prefiltering": {
+      "project_level_time": 0.0,
+      "file_level_time": 0.0,
+      "rules_with_project_prefilters_ratio": 0.0,
+      "rules_with_file_prefilters_ratio": 1.0,
+      "rules_selected_ratio": 0.36363636363636365,
+      "rules_matched_ratio": 0.36363636363636365
+    },
+    "targets": [],
+    "total_bytes": 0,
+    "max_memory_bytes": 128275008
+  },
+  "engine_requested": "OSS",
+  "skipped_rules": [],
+  "profiling_results": []
+}

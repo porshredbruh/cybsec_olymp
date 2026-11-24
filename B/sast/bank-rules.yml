@@ -1,0 +1,99 @@
+rules:
+  - id: bank.client-asserted-identity
+    languages: [python]
+    severity: ERROR
+    message: The identity provider returns the integer supplied in the client identity header. Review the trust boundary.
+    patterns:
+      - pattern-inside: |
+          async def $F(x_user_id: $T = Header(...)) -> int:
+            ...
+      - pattern: return int(x_user_id)
+  - id: bank.nonatomic-debit
+    languages: [python]
+    severity: ERROR
+    message: A prior balance observation is followed by an unconditional debit. Verify that funds are reserved atomically.
+    patterns:
+      - pattern-inside: |
+          async with $CONN.transaction():
+            ...
+            $BAL = await $CONN.fetchval("SELECT balance_cents FROM accounts WHERE id=$1", ...)
+            ...
+      - pattern: await $CONN.execute("UPDATE accounts SET balance_cents = balance_cents - $1 WHERE id=$2", ...)
+  - id: bank.cache-after-commit
+    languages: [python]
+    severity: WARNING
+    message: A cache operation lies between database commit and acknowledgement. Review the outcome when Redis is unavailable.
+    pattern: |
+      async with $POOL.acquire() as $C:
+        async with $C.transaction():
+          ...
+      await $R.delete(...)
+      return ...
+  - id: bank.empty-cache-hit
+    languages: [python]
+    severity: WARNING
+    message: A nonempty Redis result makes the history handler return an empty list.
+    pattern: |
+      $CACHED = await $R.get(...)
+      if $CACHED:
+        return []
+  - id: bank.search-in-cache-key
+    languages: [python]
+    severity: INFO
+    message: User-supplied search text is part of the cache key. Check visibility to cache operators and monitoring.
+    patterns:
+      - pattern-inside: |
+          async def $F(..., search: $T):
+            ...
+      - pattern: |
+          f"tx:{$U}:{$L}:{search or ''}"
+  - id: bank.demo-balances-at-startup
+    languages: [generic]
+    paths: {include: ["**/db.py"]}
+    severity: WARNING
+    message: On an empty database the initialization routine adds nonzero example balances. Check environment separation.
+    pattern-regex: 'INSERT INTO accounts\(owner_user_id, balance_cents\)\s+VALUES\s+\(\d+,\s*[1-9]\d*\)'
+  - id: bank.plaintext-db-password
+    languages: [generic]
+    paths: {include: ["**/docker-compose.yml"]}
+    severity: ERROR
+    message: A literal PostgreSQL password is supplied in the deployment manifest.
+    pattern-regex: '(?m)^\s*POSTGRES_PASSWORD:\s*[^\s$\x7b\x7d]+\s*$'
+  - id: bank.privileged-app-dsn
+    languages: [generic]
+    paths: {include: ["**/docker-compose.yml"]}
+    severity: ERROR
+    message: API connects using the PostgreSQL bootstrap role with credentials embedded in the connection string.
+    pattern-regex: 'POSTGRES_DSN:\s*postgresql://postgres:[^@\s]+@'
+  - id: bank.postgres-host-port
+    languages: [generic]
+    paths: {include: ["**/docker-compose.yml"]}
+    severity: WARNING
+    message: PostgreSQL is published on a host port without an explicit loopback binding. Verify network reachability.
+    pattern-regex: '"5432:5432"'
+  - id: bank.redis-host-port
+    languages: [generic]
+    paths: {include: ["**/docker-compose.yml"]}
+    severity: WARNING
+    message: Redis is published on a host port without an explicit loopback binding. Verify network reachability and ACLs.
+    pattern-regex: '"6379:6379"'
+  - id: bank.cleartext-redis-url
+    languages: [generic]
+    paths: {include: ["**/docker-compose.yml"]}
+    severity: WARNING
+    message: Redis URL has no TLS or credentials. Check whether network and proxy controls cover this connection.
+    pattern-regex: 'REDIS_URL:\s*redis://[\w.-]+:\d+/'
+  - id: bank.asyncpg-formatted-query
+    languages: [python]
+    severity: WARNING
+    message: Formatted SQL is passed directly to a database method. Inspect interpolation before classifying SQL injection.
+    pattern-either:
+      - pattern: $C.fetch(f"...", ...)
+      - pattern: $C.fetchrow(f"...", ...)
+      - pattern: $C.execute(f"...", ...)
+      - pattern: $C.fetchval(f"...", ...)
+  - id: bank.sql-builder-review
+    languages: [python]
+    severity: INFO
+    message: Dynamic SQL fragment. Classify manually by tracing interpolated values and bound parameters.
+    pattern: sql += f"..."
